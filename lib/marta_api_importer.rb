@@ -6,7 +6,7 @@ require 'pry'
 class MartaTrainScheduleImporter 
   #the url to receive train schedule information from 
   url = 'http://developer.itsmarta.com/RealtimeTrain/
-RestServiceNextTrain/GetRealtimeArrivals?apikey=233df857-73b8-4ecf-812b-e0bd443c9a86'
+RestServiceNextTrain/GetRealtimeArrivals?apikey='
 
   #store the url as a class object
   uri = URI.parse(url)
