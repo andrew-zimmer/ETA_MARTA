@@ -22,7 +22,8 @@ class MartaAPIController
     
     train = MartaTrainScheduleImporter.train_api_call(get_key).select{|hash| hash['TRAIN_ID'] == train_id}
     
-    binding.pry
+   binding.pry
+    
     
   end 
 end 
