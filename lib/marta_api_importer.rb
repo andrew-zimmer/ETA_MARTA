@@ -5,7 +5,7 @@ require 'pry'
 require 'addressable/uri'
 
 class MartaTrainScheduleImporter 
-  @@api_key = ''
+  
   def self.train_api_call(api_key)
     #the url to receive train schedule information from 
     url = "http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=#{api_key}"
@@ -23,4 +23,3 @@ class MartaTrainScheduleImporter
   end 
 end 
 
-MartaTrainScheduleImporter.train_api_call('')
