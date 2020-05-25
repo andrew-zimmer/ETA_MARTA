@@ -16,43 +16,20 @@ class MartaAPIController
     
     new_user = User.new(get_name, get_key)
     
-    puts "Lets find out where you want to go."
-    puts "Select which available rail line you want to use to select your destination:"
+    puts "lets track that train #{get_name}"
     
-    #gives a list of rail lines that are listed in the api 
-    TrainSchedule.train_railline(new_user.api_key).each.with_index(1){|index, element| puts "#{element}: #{index}"}
+    train_id = MartaTrainScheduleImporter.train_api_call(get_key)[0]['TRAIN_ID']
     
-    #receives the user's answer for which rail line 
-    get_rail  = gets.strip.to_i
-    rail_input = TrainSchedule.train_railline(new_user.api_key)[get_rail -1]
+    train = MartaTrainScheduleImporter.train_api_call(get_key).select{|hash| hash['TRAIN_ID'] == train_id}
     
-    TrainSchedule.train_from_rail_line(get_key, rail_input).each.with_index(1){|index, element| puts "#{element}: #{index}"}
-    
-    
-    
-    
-    # puts "Select from the provide options using the corresponding number."
-    # #list of train stations 
-    # TrainSchedule.train_stations(new_user.api_key).each.with_index(1){|index, element| puts "#{element}: #{index}"}
+    binding.pry
     
   end 
 end 
 
 
 class TrainSchedule
-  def self.train_stations(api_key) 
-    MartaTrainScheduleImporter.train_api_call(api_key).collect {|hash| hash['STATION']}.uniq
-  end 
-  
-  def self.train_railline(api_key)
-    array = MartaTrainScheduleImporter.train_api_call(api_key).collect {|hash| hash['LINE']}.uniq.sort
-    #binding.pry
-    array
-  end 
-  
-  def self.train_from_rail_line(api_key, user_line_input)
-    MartaTrainScheduleImporter.train_api_call(api_key).select {|hash| hash['LINE'] == user_line_input}
-  end 
+
 end
 
 
