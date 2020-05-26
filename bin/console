@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "cli_project"
+
 require_all "lib"
 
 # You can add fixtures and/or initialization code here to make experimenting
@@ -13,5 +13,3 @@ Pry.start
 
 #require "irb"
 #IRB.start(__FILE__)
-
-MartaAPIController.new.all 

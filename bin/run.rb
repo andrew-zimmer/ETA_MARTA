@@ -1,1 +1,0 @@
-MartaAPIController.new.all 

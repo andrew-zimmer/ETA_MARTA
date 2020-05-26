@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/environment"
+
+
+MartaAPIController.new('233df857-73b8-4ecf-812b-e0bd443c9a86').call

@@ -1,25 +1,28 @@
-require 'open-uri'
-require 'net/http'
-require 'json'
-require 'pry'
-require 'addressable/uri'
+class MartaTrainScheduleImporter
+  attr_accessor :key
 
-class MartaTrainScheduleImporter 
-  
-  def self.train_api_call(api_key)
-    #the url to receive train schedule information from 
-    url = "http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=#{api_key}"
-  
+  def initialize(key)
+    @key = key
+  end
+
+  def train_api_call
+    #the url to receive train schedule information from
+    url = "http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=#{key}"
+
     #store the url as a class object
     uri = URI.parse(URI.encode(url))
-    
-    # #sending a get request to return a value of Net::HTTPOK object 
-    responsed = Net::HTTP.get_response(uri)
-  
-    # #parse using json
-    train_array = JSON.parse(responsed.body)
-  
-    binding.pry
-  end 
-end 
 
+    # #sending a get request
+    responsed = Net::HTTP.get_response(uri)
+
+    # #parse using json into an array
+    train_array = JSON.parse(responsed.body)
+  end
+
+  def import
+    self.train_api_call.each do |hash|
+      Train.create(hash)
+    end
+  end
+
+end
