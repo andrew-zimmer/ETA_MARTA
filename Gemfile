@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'pry'
+gem 'pry', '~> 0.13.1'
 gem 'open_uri'
 gem 'addressable'
 
