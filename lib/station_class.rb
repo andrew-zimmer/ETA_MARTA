@@ -1,11 +1,12 @@
 class Station
-    attr_accessor :name, :incoming_trains, :event_time
+    attr_accessor :name, :incoming_trains, :directions
 
     @@all = []
 
     def initialize(name)
         @name = name
         @incoming_trains = []
+        @directions = []
         @@all << self
     end
 
@@ -37,6 +38,9 @@ class Station
                 new_hash['event_time'] = obj.event_time
                 new_hash['waiting_time'] = obj.station.find {|hash| hash['station'] == self.name}['waiting_time']
                 @incoming_trains << new_hash
+                if !self.directions.include?(obj.dir)
+                    @directions << obj.dir
+                end
             end
         end
     end
@@ -48,6 +52,10 @@ class Station
         else
             Station.new(station).add_trains_info
         end
+    end
+
+    def self.clear
+        self.all.clear
     end
 
 

@@ -18,6 +18,14 @@ class RailLine
         self.all.sort{|a,b| a.name <=> b.name}.collect{|obj| obj.name}
     end
 
+    def self.list_direction
+        self.all.sort{|a,b| a.dir <=> b.dir}.collect{|obj| obj.dir}.flatten.uniq
+    end
+
+    def self.list_stations_from_direction(direction)
+        self.all.select{|obj| obj.dir.include?(direction)}.collect{|obj| obj.stations}.flatten.uniq.sort
+    end
+
     def self.find_station_from_line(line)
         self.all.find{|obj| obj.name == line}.stations
     end
@@ -54,5 +62,9 @@ class RailLine
         else
             RailLine.new(line).add_station_info
         end
+    end
+
+    def self.clear
+        self.all.clear
     end
 end

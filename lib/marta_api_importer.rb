@@ -15,7 +15,7 @@ class MartaTrainScheduleImporter
     # #sending a get request
     responsed = Net::HTTP.get_response(uri)
 
-    # #parse using json into an array
+    #parse using json into an array
     train_array = JSON.parse(responsed.body)
   end
 
