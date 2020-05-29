@@ -11,6 +11,7 @@ class Station
     end
 
     def self.all
+        @@all.each{|obj| obj.add_trains_info}
         @@all
     end
 
@@ -22,27 +23,31 @@ class Station
         self.all.find{|obj| obj.name == input}.incoming_trains
     end
 
+    def self.find_stations_by_direction(direction)
+        self.all.select{|obj| obj.directions.include?(direction)}.collect{|obj| obj.name}.sort
+    end
+
     def find_trains
         Train.all.select{|obj| obj.station.find{|hash| hash['station'] == self.name}}
     end
 
     def add_trains_info
-        array = self.find_trains
-        array.each do |obj|
-            if !self.incoming_trains.find{|hash| hash['id'] == obj.id }
+        self.find_trains.each do |obj|
+            # if !self.incoming_trains.any?{|hash|hash['train_id'] == obj.id}
                 new_hash = Hash.new
-                new_hash["id"] = obj.id
-                new_hash['dir'] = obj.dir
+                new_hash["train_id"] = obj.id
                 new_hash['line'] = obj.line
+                new_hash['dir'] = obj.dir
                 new_hash['destination'] = obj.destination
                 new_hash['event_time'] = obj.event_time
                 new_hash['waiting_time'] = obj.station.find {|hash| hash['station'] == self.name}['waiting_time']
                 @incoming_trains << new_hash
                 if !self.directions.include?(obj.dir)
                     @directions << obj.dir
-                end
+                # end
             end
         end
+        self.incoming_trains.uniq!{|hash| hash['train_id']}
     end
 
     def self.create(station)

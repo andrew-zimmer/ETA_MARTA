@@ -19,11 +19,7 @@ class RailLine
     end
 
     def self.list_direction
-        self.all.sort{|a,b| a.dir <=> b.dir}.collect{|obj| obj.dir}.flatten.uniq
-    end
-
-    def self.list_stations_from_direction(direction)
-        self.all.select{|obj| obj.dir.include?(direction)}.collect{|obj| obj.stations}.flatten.uniq.sort
+        self.all.collect{|obj| obj.dir}.flatten.uniq.sort
     end
 
     def self.find_station_from_line(line)

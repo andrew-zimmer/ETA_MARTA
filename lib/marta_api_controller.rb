@@ -6,11 +6,11 @@ class MartaAPIController
     @key = key
     marta_import(key)
   end
-  @@rail = ''
-  @@direction = ''
-  @@station = ''
-  @@trains = []
-  @@initial_options = ["Rail-Line and Direction", "Station", "Trains"]
+  @rail = ''
+  @direction = ''
+  @station = ''
+  @trains = []
+  @initial_options = ["Rail-Line and Direction", "Station", "Trains"]
   def call
     puts "Welcome to ETA MARTA!"
 binding.pry
@@ -35,11 +35,7 @@ binding.pry
 
       #receives the input from user to select from an available list of rail lines
       @get_line = gets.strip.to_i
-      # until @get_line.between?(1, list_lines.length)
-      #   puts "Lets try this again"
-      #   list_lines_and_dir_with_index
-      #   @get_line = gets.strip.to_i
-      # end
+
       until @get_line.between?(0, list_dir.length+list_lines.length)
         puts "Try again."
         @get_line = gets.strip.to_i
@@ -97,19 +93,19 @@ binding.pry
     puts "\nHere is the available list of stations on the line you chose.\n"
     puts "Choose the station by typing the corresponding number:"
 
-    @@rail = RailLine.list_lines[input-1]
-    @@station = RailLine.find_station_from_line(@@rail).sort.uniq
-    RailLine.find_station_from_line(@@rail).sort.each.with_index(1){|element, index| puts "\n#{index}: #{element}\n-----------------------"}
+    @rail = RailLine.list_lines[input-1]
+    @station = RailLine.find_station_from_line(@rail).sort.uniq
+    RailLine.find_station_from_line(@rail).sort.each.with_index(1){|element, index| puts "\n#{index}: #{element}\n-----------------------"}
 
   end
 
   def list_trains_from_station(input)
 
-    @@station = @@station[input-1]
-    puts "\nHere are a list of incoming trains for #{@@station} on the #{@@rail} line:\n"
+    @station = @station[input-1]
+    puts "\nHere are a list of incoming trains for #{@station} on the #{@rail} line:\n"
     puts ""
 
-    Station.find_self_and_trains(@@station).select{|hash| hash['line'] == @@rail}.each.with_index(1) do |element, index|
+    Station.find_self_and_trains(@station).select{|hash| hash['line'] == @rail}.each.with_index(1) do |element, index|
       puts "#{index}: Destination: #{element['destination']}\n"
       puts "   Direction: #{element['dir']}\n"
       puts "   Base Time: #{element['event_time']}\n"
@@ -127,7 +123,7 @@ binding.pry
     #receives the input from user to select from an available list of stations based on a rail line
     get_station = gets.strip.to_i
 
-    if !get_station.between?(1, @@station.length)
+    if !get_station.between?(1, @station.length)
         puts "Lets try this again:"
         list_of_train_based_on_line
     else
@@ -147,7 +143,7 @@ binding.pry
     #receives the input from user to select from an available list of stations based on a rail line
     get_station = gets.strip.to_i
 
-    if !get_station.between?(1, @@station.length)
+    if !get_station.between?(1, @station.length)
         puts "Lets try this again:"
         list_of_trains_based_on_direction
     else
@@ -159,20 +155,20 @@ binding.pry
     puts "\nHere is the available list of stations from the direction you chose.\n"
     puts "Choose the station by typing the corresponding number:"
 
-    @@direction = list_dir[input-list_lines.length-1]
-    @@station = RailLine.list_stations_from_direction(@@direction).sort
-    RailLine.list_stations_from_direction(@@direction).each.with_index(1){|element, index| puts "\n#{index}: #{element}\n-----------------------"}
+    @direction = list_dir[input-list_lines.length-1]
+    @station = Station.find_stations_by_direction(@direction).sort
+    Station.find_stations_by_direction(@direction).each.with_index(1){|element, index| puts "\n#{index}: #{element}\n-----------------------"}
 
 
   end
 
   def list_trains_from_station_and_dir(input)
 
-    @@station = @@station.sort[input-1]
-    puts "\nHere are a list of incoming trains for #{@@station} on the #{@@direction} line:\n"
+    @station = @station.sort[input-1]
+    puts "\nHere are a list of incoming trains for #{@station} on the #{@direction} line:\n"
     puts ""
 
-    Station.find_self_and_trains(@@station).select{|hash| hash['dir'] == @@direction}.each.with_index(1) do |element, index|
+    Station.find_self_and_trains(@station).select{|hash| hash['dir'] == @direction}.each.with_index(1) do |element, index|
       puts "#{index}: Destination: #{element['destination']}\n"
       puts "   Direction: #{element['dir']}\n"
       puts "   Base Time: #{element['event_time']}\n"
@@ -206,9 +202,9 @@ binding.pry
       sleep(1)
       pick_from_list_of_all_stations
     elsif get_station.between?(1, list_stations.length)
-      @@station = list_stations[get_station-1]
-      puts "\nHere is the list of incoming trains for #{@@station}:\n\n"
-      Station.all.find{|obj| obj.name == @@station}.incoming_trains.each.with_index(1) do |element, index|
+      @station = list_stations[get_station-1]
+      puts "\nHere is the list of incoming trains for #{@station}:\n\n"
+      Station.all.find{|obj| obj.name == @station}.incoming_trains.each.with_index(1) do |element, index|
         puts "#{index}: Destination: #{element['destination']}\n"
         puts "   Direction: #{element['dir']}\n"
         puts "   Base Time: #{element['event_time']}\n"
@@ -245,7 +241,7 @@ end
 
 #------------------------------other methods ------------------------------------------------------------
   def refresh
-    if @@rail != "" && @@station != "" && @@trains != []
+    if @rail != "" && @station != "" && @trains != []
 
     end
   end

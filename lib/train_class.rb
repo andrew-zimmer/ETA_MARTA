@@ -18,25 +18,25 @@ class Train
         @@all
     end
 
-    def station(stations="", waiting_time="")
-        new_hash = {}
-        if stations != "" && waiting_time != ""
-            Station.create(stations)
-            new_hash['station'] = stations
-            new_hash['waiting_time'] = waiting_time
-            @station << new_hash
-        end
-        @station
+    def station=(hash)
+        Station.create(hash['station'])
+        @station << hash
     end
 
     def self.create(hash)
         RailLine.create(hash['LINE'])
         if self.all.find{|object| object.id == hash['TRAIN_ID']}
             old_object = self.all.find{|object| object.id == hash['TRAIN_ID']}
-            old_object.station(hash['STATION'], hash['WAITING_TIME'])
+            new_hash = {}
+            new_hash['station'] = hash['STATION']
+            new_hash['waiting_time'] = hash["WAITING_TIME"]
+            old_object.station = new_hash
         else
             new_object = self.new(hash['TRAIN_ID'], hash['DESTINATION'], hash['EVENT_TIME'], hash['LINE'], hash['DIRECTION'])
-            new_object.station(hash['STATION'], hash['WAITING_TIME'])
+            new_hash = {}
+            new_hash['station'] = hash['STATION']
+            new_hash['waiting_time'] = hash["WAITING_TIME"]
+            new_object.station = new_hash
         end
 
     end
