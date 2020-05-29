@@ -13,7 +13,7 @@ class MartaAPIController
   @@initial_options = ["Rail-Line and Direction", "Station", "Trains"]
   def call
     puts "Welcome to ETA MARTA!"
-
+binding.pry
     puts "Select a search option by entering the corresponding number:"
     puts "1: Search by Rail-Line or Direction of travel"
     puts "2: Choose from a list of stations to see all incoming trains"
@@ -98,7 +98,7 @@ class MartaAPIController
     puts "Choose the station by typing the corresponding number:"
 
     @@rail = RailLine.list_lines[input-1]
-    @@station = RailLine.find_station_from_line(@@rail).uniq
+    @@station = RailLine.find_station_from_line(@@rail).sort.uniq
     RailLine.find_station_from_line(@@rail).sort.each.with_index(1){|element, index| puts "\n#{index}: #{element}\n-----------------------"}
 
   end
@@ -129,13 +129,13 @@ class MartaAPIController
 
     if !get_station.between?(1, @@station.length)
         puts "Lets try this again:"
-        list_of_trains_based_on_line
+        list_of_train_based_on_line
     else
       list_trains_from_station(get_station)
     end
     puts "\nType 1 to restart and anything else to end:\n"
-    get_end = gets.strip.to_i
-    restart if get_end == 1
+    get_end = gets.strip
+    restart if get_end == '1'
   end
 
 
@@ -149,7 +149,7 @@ class MartaAPIController
 
     if !get_station.between?(1, @@station.length)
         puts "Lets try this again:"
-        list_of_trains_based_on_line
+        list_of_trains_based_on_direction
     else
       list_trains_from_station_and_dir(get_station)
     end
@@ -181,8 +181,8 @@ class MartaAPIController
       puts "----------------------------"
     end
     puts "\nType 1 to restart and anything else to end:\n"
-    get_end = gets.strip.to_i
-    if get_end == 1
+    get_end = gets.strip
+    if get_end == '1'
       restart
     end
   end
@@ -219,8 +219,8 @@ class MartaAPIController
       end
 
       puts "\nType 1 to restart and anything else to end:\n"
-      get_end = gets.strip.to_i
-      restart if get_end == 1
+      get_end = gets.strip
+      restart if get_end == '1'
     else
       restart
     end
@@ -239,8 +239,8 @@ def list_all_trains
     element.station.each{|hash| puts "Station: #{hash['station']}\nWait Time: #{hash['waiting_time']}\n-----------------------------------\n"}
   end
   puts "\nType 1 to restart and anything else to end:\n"
-  get_end = gets.strip.to_i
-  restart if get_end == 1
+  get_end = gets.strip
+  restart if get_end == '1'
 end
 
 #------------------------------other methods ------------------------------------------------------------
