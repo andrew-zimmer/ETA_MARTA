@@ -13,7 +13,7 @@ class MartaAPIController
   @initial_options = ["Rail-Line and Direction", "Station", "Trains"]
   def call
     puts "Welcome to ETA MARTA!"
-binding.pry
+
     puts "Select a search option by entering the corresponding number:"
     puts "1: Search by Rail-Line or Direction of travel"
     puts "2: Choose from a list of stations to see all incoming trains"
@@ -236,15 +236,12 @@ def list_all_trains
   end
   puts "\nType 1 to restart and anything else to end:\n"
   get_end = gets.strip
-  restart if get_end == '1'
+  if get_end == '1'
+    restart
+  end
 end
 
 #------------------------------other methods ------------------------------------------------------------
-  def refresh
-    if @rail != "" && @station != "" && @trains != []
-
-    end
-  end
 
   def restart
     Station.clear
