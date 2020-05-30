@@ -10,7 +10,7 @@ class MartaTrainScheduleImporter
     url = "http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=#{key}"
 
     #store the url as a class object
-    uri = URI.parse(URI.encode(url))
+    uri = URI.parse(url)
 
     # #sending a get request
     responsed = Net::HTTP.get_response(uri)
